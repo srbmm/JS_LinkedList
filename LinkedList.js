@@ -48,7 +48,7 @@ class LinkedList{
         }else if (index === this.size - 1){
             this.add_last(...args)
             this.size++
-        }else if(0 > index > this.size-1){
+        }else if(0 < index < this.size-1){
             const node = new this.NodeClass(...args)
             let counter = 0
             let head = this.first
@@ -60,8 +60,9 @@ class LinkedList{
                     head.before = node
                     break
                 }
-            }
             counter++
+            head = head.next
+            }
             this.size++
         }else {
             console.log('Error in add.')
@@ -96,15 +97,19 @@ class LinkedList{
             type = 'value'
         }
         let head = this.first
-        while (head !== undefined){
-            if (head[type] === value){
-                head.before.next = head.next
-                head.next.before = head.before
-                this.size--
-                flag = true
-                break
+        if (this.first[type] === value) this.delete_first()
+        else if (this.last[type] === value) this.delete_last()
+        else {
+            while (head !== undefined) {
+                if (head[type] === value) {
+                    head.before.next = head.next
+                    head.next.before = head.before
+                    this.size--
+                    flag = true
+                    break
+                }
+                head = head.next
             }
-            head = head.next
         }
         return flag
     }
@@ -115,7 +120,8 @@ class LinkedList{
         }
         let head = this.first
         while (head !== undefined){
-            console.log(head[type])
+            if (type !== undefined) console.log(head[type])
+            else console.log(head)
             head = head.next
         }
     }
