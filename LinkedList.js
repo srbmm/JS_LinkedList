@@ -5,6 +5,7 @@ class Node{
         this.before = undefined
     }
 }
+
 class LinkedList{
     constructor(nodeClass) {
         if(nodeClass !== undefined) this.NodeClass = nodeClass
@@ -13,6 +14,7 @@ class LinkedList{
         this.last = undefined
         this.size = 0
     }
+
     add_last(){
         const node = new this.NodeClass(...arguments)
         if (this.first === undefined){
@@ -25,6 +27,7 @@ class LinkedList{
         }
         this.size++
     }
+
     add_first(){
         const node = new this.NodeClass(...arguments)
         if (this.first === undefined){
@@ -37,6 +40,34 @@ class LinkedList{
         }
         this.size++
     }
+
+    add(index, ...args){
+        if (index === 0){
+            this.add_first(...args)
+            this.size++
+        }else if (index === this.size - 1){
+            this.add_last(...args)
+            this.size++
+        }else if(0 > index > this.size-1){
+            const node = new this.NodeClass(...args)
+            let counter = 0
+            let head = this.first
+            while (head !== undefined){
+                if (index === counter){
+                    node.next = head
+                    node.before = head.before
+                    head.before.next = node
+                    head.before = node
+                    break
+                }
+            }
+            counter++
+            this.size++
+        }else {
+            console.log('Error in add.')
+        }
+    }
+
     delete_last(){
         if(this.last !== undefined) {
             this.last = this.last.before
@@ -47,6 +78,7 @@ class LinkedList{
             return false
         }
     }
+
     delete_first(){
         if(this.first !== undefined){
             this.first = this.first.next
@@ -56,8 +88,8 @@ class LinkedList{
         }else {
             return false
         }
-
     }
+
     delete(value, type){
         let flag = false
         if(this.first instanceof Node){
@@ -76,6 +108,7 @@ class LinkedList{
         }
         return flag
     }
+
     show(type){
         if(this.first instanceof Node){
             type = 'value'
