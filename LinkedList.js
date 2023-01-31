@@ -7,14 +7,12 @@ class Node{
 }
 
 class LinkedList{
-    constructor(nodeClass) {
-        if(nodeClass !== undefined) this.NodeClass = nodeClass
-        else this.NodeClass = Node
-        this.first = undefined
-        this.last = undefined
-        this.size = 0
+    constructor(nodeClass = Node) {
+        this.NodeClass = nodeClass;
+        this.first = undefined;
+        this.last = undefined;
+        this.size = 0;
     }
-
     add_last(){
         const node = new this.NodeClass(...arguments)
         if (this.first === undefined){
@@ -91,11 +89,8 @@ class LinkedList{
         }
     }
 
-    delete(value, type){
+    delete(value, type="value"){
         let flag = false
-        if(this.first instanceof Node){
-            type = 'value'
-        }
         let head = this.first
         if (this.first[type] === value) this.delete_first()
         else if (this.last[type] === value) this.delete_last()
@@ -112,6 +107,14 @@ class LinkedList{
             }
         }
         return flag
+    }
+
+    forEach(func){
+        let head = this.first;
+        while(head !== undefined){
+            func(head.value);
+            head = head.next;
+        }
     }
 
     show(type){
